@@ -1,4 +1,5 @@
 class ApartmentsController < ApplicationController
+    #full CRUD complete
     def index 
         apartments = Apartment.all
         render json: apartments, only: [:name, :id, :number], include: [:leases, :tenants]

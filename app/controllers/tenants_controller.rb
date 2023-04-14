@@ -1,12 +1,20 @@
 class TenantsController < ApplicationController
-    def index 
-        tenants = Tenant.all
-        render json: tenants, only: [:name, :id, :age], include: [:leases, :apartments]
-    end
+    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
+    #CRUD actions complete
     def show 
         tenant = Tenant.find(params[:id])
         render json: tenant
+    end
+
+    def update 
+        tenant = Tenant.find(params[:id])
+        if tenant
+            tenant.update(tenant_params)
+            render json: tenant
+        else
+            render json: {error: "Tenant not found"}
+        end
     end
 
     def destroy 
@@ -17,7 +25,11 @@ class TenantsController < ApplicationController
 
     def create 
         tenant = Tenant.create(tenant_params)
-        render json: tenant
+        if tenant.valid?
+            render json: tenant
+        else
+            render json: { error: tenant.errors }
+        end 
     end
 
     private

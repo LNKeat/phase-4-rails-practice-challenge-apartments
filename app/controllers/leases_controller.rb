@@ -1,4 +1,10 @@
 class LeasesController < ApplicationController
+    #create & destroy complete fully complete
+
+    def index 
+        tenants = Lease.all
+        render json: tenants
+    end
     
     def create 
         lease = Lease.create(permit_params)
