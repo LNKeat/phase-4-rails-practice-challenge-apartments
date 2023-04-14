@@ -14,4 +14,15 @@ class TenantsController < ApplicationController
         tenant.destroy
         render json: { message: "You DID IT!"}
     end
+
+    def create 
+        tenant = Tenant.create(tenant_params)
+        render json: tenant
+    end
+
+    private
+
+    def tenant_params 
+        params.permit(:name, :age)
+    end
 end
